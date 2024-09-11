@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar categoria</title>
+    <link rel="stylesheet" href="../../STYLES/registro.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Editar Categoría</h2>
+      <form id="formEditCategory">
+        <input
+          type="text"
+          name="id_editarCategoria"
+          id="id_editarCategoria"
+          hidden
+        />
+        <div class="input-group">
+          <label for="nombreCategoria">Nombre de la categoría</label>
+          <input type="text" id="nombreCategoria" name="nombreCategoria" />
+        </div>
+        <div class="input-group">
+          <label for="descripcionCategoria">Descripción de la categoría</label>
+          <input
+            type="text"
+            id="descripcionCategoria"
+            name="descripcionCategoria"
+          />
+        </div>
+        <div class="input-group">
+          <button type="submit" class="btn" id="editBtn">Editar</button>
+        </div>
+        <div class="input-group">
+          <button type="button" class="btn-cancel">
+            <a href="./Categorias.html">Cancelar</a>
+          </button>
+        </div>
+      </form>
+    </div>
+    <script src="../../JAVASCRIPT/funcCategorias/editarCategoria.js"></script>
+  </body>
+</html>

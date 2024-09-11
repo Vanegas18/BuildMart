@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cambiar estado de la Categoria</title>
+    <link rel="stylesheet" href="../../STYLES/registro.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="estado-container">
+      <div class="estado-modal">
+        <h3>Cambiar Estado de la Categoria</h3>
+        <p id="categoriaId" class="yo"><strong>Id:</strong></p>
+        <p id="categoriaNombre" class="yo"><strong>Nombre:</strong></p>
+        <p id="categoriaDescripcion" class="yo">
+          <strong>Descripcion:</strong>
+        </p>
+        <p id="estado-actual">
+          <strong>Estado Actual:</strong> <span id="estado"></span>
+        </p>
+        <div class="modal-buttons">
+          <button id="cambiarEstadoBtn" class="estado-btn cambiar">
+            Cambiar de estado
+          </button>
+          <button class="estado-btn cancelar">
+            <a href="./Categorias.html">Cancelar</a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="../../JAVASCRIPT/funcCategorias/cambiarEstado.js"></script>
+  </body>
+</html>

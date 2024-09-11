@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cambiar Estado del Producto</title>
+    <link rel="stylesheet" href="../../STYLES/registro.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="estado-container">
+      <div class="estado-modal">
+        <h3>Cambiar Estado del Producto</h3>
+        <p id="producto-nombre" class="yo"><strong>Nombre:</strong></p>
+        <p id="producto-categoria" class="yo"><strong>Categoria:</strong></p>
+        <p id="producto-precio" class="yo"><strong>Precio:</strong></p>
+        <p id="estado-actual">
+          <strong>Estado Actual:</strong> <span id="estado"></span>
+        </p>
+        <div class="modal-buttons">
+          <button id="cambiarEstadoBtn" class="estado-btn cambiar">
+            Cambiar de estado
+          </button>
+          <button class="estado-btn cancelar">
+            <a href="./Productos.html">Cancelar</a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="../../JAVASCRIPT/funcProductos/estadoProducto.js"></script>
+  </body>
+</html>

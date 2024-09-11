@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nuevo producto</title>
+    <link rel="stylesheet" href="../../STYLES/registro.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Registrar Nuevo Producto</h2>
+      <form id="form">
+        <div class="input-group">
+          <label for="nombreProducto">Nombre del Producto</label>
+          <input type="text" id="nombreProducto" name="productName" />
+        </div>
+        <div class="input-group">
+          <label for="categoriaProducto">Categoría del Producto</label>
+          <select name="categoriaProducto" id="categoriaProducto"></select>
+        </div>
+        <div class="input-group">
+          <label for="descripcionProducto">Descripción</label>
+          <input type="text" id="descripcionProducto" name="description" />
+        </div>
+        <div class="input-group">
+          <label for="precioProducto">Precio</label>
+          <input type="number" id="precioProducto" name="price" />
+        </div>
+        <div class="input-group">
+          <label for="stockProducto">Stock</label>
+          <input type="number" id="stockProducto" name="stock" />
+        </div>
+        <div class="input-group">
+          <button type="submit" class="btn-registrar" id="submit">
+            Registrar
+          </button>
+        </div>
+        <div class="input-group">
+          <button type="submit" class="btn-cancel">
+            <a href="./Productos.html">Cancelar</a>
+          </button>
+        </div>
+      </form>
+    </div>
+    <script src="../../JAVASCRIPT/funcProductos/nuevoProducto.js"></script>
+  </body>
+</html>
