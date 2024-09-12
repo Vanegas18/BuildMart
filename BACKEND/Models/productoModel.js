@@ -3,13 +3,15 @@ import mongooseSequence from 'mongoose-sequence';
 
 const AutoIncrementFactory = mongooseSequence(mongoose);
 
+//-----------------------------------------------------------------------------------------//
+
 const productoSchema = new Schema(
   {
     id: { type: Number },
     nombre: { type: String, required: true, trim: true },
     categoria: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "categorias",
+      type: mongoose.Schema.Types.ObjectId, // Tipo de dato referenciado
+      ref: "categorias", // Referencia de categorias
       required: true,
       trim: true,
     },
@@ -20,6 +22,8 @@ const productoSchema = new Schema(
   },
   { versionKey: false }
 );
+
+//-----------------------------------------------------------------------------------------//
 
 productoSchema.plugin(AutoIncrementFactory, { inc_field: "id" });
 

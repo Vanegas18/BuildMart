@@ -1,6 +1,7 @@
 import {model, Schema} from 'mongoose';
 
-// Definición del esquema para el modelo de Usuario
+//-----------------------------------------------------------------------------------------//
+
 const UsuariosSchema = new Schema(
   {
     documento: { type: Number, required: true },
@@ -14,5 +15,6 @@ const UsuariosSchema = new Schema(
   { versionKey: false }
 );
 
-// Exporta el modelo basado en el esquema UsuariosSchema para que pueda ser utilizado en otras partes de la aplicación
+//-----------------------------------------------------------------------------------------//
+
 export default model("usuarios", UsuariosSchema);

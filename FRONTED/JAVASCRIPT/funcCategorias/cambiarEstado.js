@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+  //-----------------------------------------------------------------------------------------//
   // Obtener el ID del usuario de los parámetros de la URL
   const urlParams = new URLSearchParams(window.location.search);
   const categoryId = urlParams.get("id");
 
+  //-----------------------------------------------------------------------------------------//
   if (categoryId) {
     fetch(`/api/categorias/${categoryId}`)
       .then((response) => {
@@ -12,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then((categoria) => {
-        // Rellenar los elementos con los datos del usuario
         document.getElementById("categoriaId").innerHTML =
           `<strong> Categoria: </strong>${categoria.id}`;
         document.getElementById("categoriaNombre").innerHTML =
@@ -21,10 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
           `<strong> Descripcion: </strong>${categoria.descripcion}`;
         document.getElementById("estado-actual").innerHTML =
           `<strong style="font-weight: bold; color: gray;"> Estado: </strong><strong>${categoria.estado}</strong>`;
-        // Configurar el botón de cambio de estado
         const cambiarEstadoBtn = document.getElementById("cambiarEstadoBtn");
 
-        // Establecer el color y texto del estado según el valor actual
+        //-----------------------------------------------------------------------------------------//
         if (categoria.estado === "Activo") {
           document.getElementById("estado-actual").style.color = "#6c9bcf";
           cambiarEstadoBtn.textContent = "Inactivar";
@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
           cambiarEstadoBtn.textContent = "Activar";
         }
 
-        // Manejar el clic en el botón para cambiar el estado
         cambiarEstadoBtn.addEventListener("click", function () {
           cambiarEstadoCategoria(categoryId);
         });
@@ -46,9 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Función para cambiar el estado del usuario
+//-----------------------------------------------------------------------------------------//
 function cambiarEstadoCategoria(id) {
-  // Obtener los datos actuales del usuario para determinar el nuevo estado
   fetch(`/api/categorias/${id}`)
     .then((response) => {
       if (!response.ok) {
@@ -84,8 +82,7 @@ function cambiarEstadoCategoria(id) {
         confirmButtonText: "Aceptar",
       }).then(() => {
         // Redirigir a la lista de usuarios después de la actualización
-        window.location.href =
-          "../../PAGES/viewsCategorias/Categorias.html";
+        window.location.href = "../../PAGES/viewsCategorias/Categorias.html";
       });
     })
     .catch((error) => {

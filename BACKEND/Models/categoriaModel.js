@@ -3,6 +3,8 @@ import mongooseSequence from 'mongoose-sequence';
 
 const AutoIncrementFactory = mongooseSequence(mongoose);
 
+//-----------------------------------------------------------------------------------------//
+
 const categoriaSchema = new Schema(
   {
     id: { type: Number },
@@ -14,6 +16,8 @@ const categoriaSchema = new Schema(
     versionKey: false, 
   }
 );
+
+//-----------------------------------------------------------------------------------------//
 
 categoriaSchema.plugin(AutoIncrementFactory, { inc_field: "Id" });
 
