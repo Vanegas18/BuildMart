@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
 //-----------------------------------------------------------------------------------------//
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -93,6 +94,7 @@ export async function putUsuario(req, res) {
 }
 
 //-----------------------------------------------------------------------------------------//
+
 // METODO PUT
 export async function putUsuarioEstado(req, res) {
   const { id } = req.params;
@@ -137,6 +139,7 @@ export async function postUsuario(req, res) {
       estado,
     });
 
+    //Cambiar la "ñ"
     usuario.contraseña = await bcrypt.hash(contraseña, 5);
     await usuario.save();
     enviarCorreoRegistro(email);
