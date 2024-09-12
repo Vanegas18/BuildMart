@@ -3,31 +3,30 @@ document.addEventListener("DOMContentLoaded", function () {
   let usuarios = []; // Variable para almacenar todos los usuarios que se obtendrán de la API
   let usuariosFiltrados = []; // Variable para almacenar los usuarios que coinciden con el filtro de búsqueda
 
-  // Obtener la lista de usuarios desde la API
+  //-----------------------------------------------------------------------------------------//
   fetch("/api/usuarios")
     .then((response) => {
-      // Verifica si la respuesta es correcta (status 200-299)
       if (!response.ok) {
         throw new Error("Error al obtener la lista de usuarios.");
       }
       return response.json(); // Convierte la respuesta a JSON
     })
     .then((data) => {
-      usuarios = data; // Almacena la lista completa de usuarios en la variable 'usuarios'
-      usuariosFiltrados = [...usuarios]; // Inicialmente, todos los usuarios están en la lista filtrada
-      mostrarUsuarios(usuariosFiltrados); // Muestra todos los usuarios en la tabla
-      initPagination(usuariosFiltrados); // Inicializa la paginación para mostrar los usuarios
+      usuarios = data;
+      usuariosFiltrados = [...usuarios];
+      mostrarUsuarios(usuariosFiltrados);
+      initPagination(usuariosFiltrados);
     })
-    .catch((error) => console.error("Error cargando usuarios:", error)); // Maneja cualquier error en la obtención de usuarios
+    .catch((error) => console.error("Error cargando usuarios:", error));
 
-  // Función para mostrar usuarios en la tabla
+  //-----------------------------------------------------------------------------------------//
+
   function mostrarUsuarios(usuariosParaMostrar) {
-    const tbody = document.querySelector("#tablaUsuarios tbody"); // Selecciona el cuerpo de la tabla donde se mostrarán los usuarios
-    tbody.innerHTML = ""; // Limpia cualquier contenido previo en la tabla
+    const tbody = document.querySelector("#tablaUsuarios tbody");
+    tbody.innerHTML = "";
 
-    // Itera sobre cada usuario en la lista 'usuariosParaMostrar'
     usuariosParaMostrar.forEach((usuario) => {
-      const tr = document.createElement("tr"); // Crea una nueva fila para cada usuario
+      const tr = document.createElement("tr");
 
       // Define el contenido HTML de la fila con los datos del usuario
       tr.innerHTML = `
@@ -38,13 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <td class="datos">${usuario.numero}</td>
         <td class="datos">${usuario.rol}</td>
         <td class="${usuario.estado === "Inactivo" ? "danger" : "primary"}">${
-        usuario.estado
-      }</td>
+          usuario.estado
+        }</td>
         <td>
           <button class="btnEditar dark-mode" on
-          click="editarUsuario('${
-            usuario._id
-          }')">
+          click="editarUsuario('${usuario._id}')">
             <a href="./editarUsuario.html?id=${usuario._id}">
               <i class="fa-solid fa-pen-to-square"></i>
             </a>
@@ -64,17 +61,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Función para buscar y filtrar usuarios
+  //-----------------------------------------------------------------------------------------//
+
+  const buscador = document.getElementById("buscador");
+  buscador.addEventListener("input", buscarUsuarios);
+
+  buscador.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      buscarUsuarios();
+    }
+  });
+
   function buscarUsuarios() {
-    const filtro = buscador.value.toLowerCase(); // Obtiene el valor del campo de búsqueda y lo convierte a minúsculas
+    const filtro = buscador.value.toLowerCase();
     usuariosFiltrados = usuarios.filter((usuario) => {
-      // Convierte el documento y nombre del usuario a minúsculas para la comparación
       const documento = usuario.documento
         ? usuario.documento.toString().toLowerCase()
         : "";
       const nombre = usuario.nombre ? usuario.nombre.toLowerCase() : "";
 
-      // Retorna usuarios cuyo nombre o documento coincidan con el filtro
       return nombre.includes(filtro) || documento.includes(filtro);
     });
 
@@ -82,16 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initPagination(usuariosFiltrados); // Reinicia la paginación con la lista de usuarios filtrados
   }
 
-  // Asigna el evento de búsqueda cuando el usuario escribe en el campo de búsqueda
-  const buscador = document.getElementById("buscador");
-  buscador.addEventListener("input", buscarUsuarios);
-
-  // Asigna el evento de búsqueda al presionar Enter
-  buscador.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      buscarUsuarios(); // Filtra los usuarios cuando se presiona Enter
-    }
-  });
+  //-----------------------------------------------------------------------------------------//
 
   // Función de inicialización de paginación
   function initPagination(usuariosParaPaginar) {

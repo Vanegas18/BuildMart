@@ -1,7 +1,8 @@
-// EDITAR
 document.addEventListener("DOMContentLoaded", () => {
   const formEdit = document.getElementById("formEdit");
   const editBtn = document.querySelector(".btn");
+
+  //-----------------------------------------------------------------------------------------//
 
   // Obtener el ID del usuario de la URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -13,10 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Obtener los datos del usuario desde la API
+  //-----------------------------------------------------------------------------------------//
+
   fetch(`/api/usuarios/${id}`)
     .then((response) => {
-      // Verificar si la respuesta es exitosa
       if (!response.ok) {
         throw new Error("No se pudo obtener los datos del usuario.");
       }
@@ -24,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       if (data) {
-        // Rellenar el formulario con los datos del usuario
         document.getElementById("documento_editar").value = data.documento;
         document.getElementById("nombre_editar").value = data.nombre;
         document.getElementById("email_editar").value = data.email;
@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error al obtener datos del usuario:", error)
     );
 
+  //-----------------------------------------------------------------------------------------//
+
   const expresiones = {
     namee: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
     documentoo: /^\d{8,12}$/, // Solo dígitos, 8 a 12 dígitos.
@@ -45,12 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
     telefono: /^\d{7,14}$/, // 7 a 14 números.
   };
 
-  // Manejar la edición del usuario al hacer clic en el botón
   if (formEdit && editBtn) {
     editBtn.addEventListener("click", (e) => {
       e.preventDefault(); // Evitar el envío del formulario por defecto
 
-      // Recopilar los datos del formulario
       const nombre = document.getElementById("nombre_editar").value;
       const documento = document
         .getElementById("documento_editar")
@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = document.getElementById("email_editar").value;
       const numero = document.getElementById("numero_editar").value.trim();
       const rol = document.getElementById("rol_editar").value;
+
       let valid = true;
 
       // Validar el campo email
@@ -100,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
         valid = false;
       }
 
-      // Si todos los campos son válidos, enviar los datos
       if (valid) {
         const usuario = {
           documento,
@@ -108,19 +108,17 @@ document.addEventListener("DOMContentLoaded", () => {
           email,
           numero,
           rol,
-          estado: "Activo", // Estado inicial del usuario
+          estado: "Activo",
         };
 
-        // Enviar los datos actualizados a la API
         fetch(`/api/usuarios/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(usuario),
+          body: JSON.stringify(usuario), // Convertir objeto a cadena JSON
         })
           .then((response) => {
-            // Verificar si la respuesta es exitosa
             if (!response.ok) {
               throw new Error("No se pudo actualizar el usuario.");
             }
@@ -133,8 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
               icon: "success",
             }).then((result) => {
               if (result.isConfirmed) {
-                // Redirigir a la lista de usuarios después de la actualización
-                window.location.href = "../../PAGES/viewsUsuarios/Usuarios.html";
+                window.location.href =
+                  "../../PAGES/viewsUsuarios/Usuarios.html";
               }
             });
           })
