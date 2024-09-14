@@ -17,6 +17,3 @@ try {
   console.error("Error al iniciar el servidor:", error);
   process.exit(1); // Salir del proceso con un código de error
 }
-
-// Crea una instancia de la aplicación express
-const app = express();
