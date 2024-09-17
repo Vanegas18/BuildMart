@@ -79,8 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
         ? usuario.documento.toString().toLowerCase()
         : "";
       const nombre = usuario.nombre ? usuario.nombre.toLowerCase() : "";
+      const estado = usuario.estado ? usuario.estado.toLowerCase() : "";
 
-      return nombre.includes(filtro) || documento.includes(filtro);
+      return (
+        nombre.includes(filtro) ||
+        documento.includes(filtro) ||
+        estado.includes(filtro)
+      );
     });
 
     mostrarUsuarios(usuariosFiltrados); // Muestra los usuarios filtrados en la tabla
