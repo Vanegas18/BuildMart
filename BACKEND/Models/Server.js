@@ -2,7 +2,8 @@ import express from "express";
 
 // Se utiliza para permitir o restringir solicitudes de recursos desde diferentes orígenes.
 import cors from "cors";
-import { dbConnection } from "../Database/config.js";
+import { dbConnection, dbConnectionSQL } from "../Database/config.js";
+import sequelize from "../Database/config.js";
 import "../Database/config.js";
 import usuariosRutas from "../Routes/usuariosRutas.js";
 import productosRutas from "../Routes/productosRutas.js";
@@ -30,6 +31,17 @@ class Server {
 
   async conectarDB() {
     await dbConnection();
+    await dbConnectionSQL();
+
+    // Sincronizar los modelos SQL después de establecer la conexión
+    sequelize
+      .sync()
+      .then(() => {
+        console.log("Base de datos SQL y tablas creadas");
+      })
+      .catch((error) => {
+        console.error("Error al sincronizar la base de datos SQL", error);
+      });
   }
 
   //-----------------------------------------------------------------------------------------//

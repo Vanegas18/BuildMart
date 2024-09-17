@@ -1,20 +1,28 @@
-import {model, Schema} from 'mongoose';
+import { DataTypes } from "sequelize";
+import sequelize from "../Database/config.js";
 
 //-----------------------------------------------------------------------------------------//
 
-const UsuariosSchema = new Schema(
+const UsuariosSchema = sequelize.define(
+  "Usuarios",
   {
-    documento: { type: Number, required: true },
-    nombre: { type: String, required: true },
-    email: { type: String, required: true },
-    numero: { type: Number, required: true },
-    rol: { type: String, required: true },
-    contraseña: { type: String, required: true },
-    estado: { type: String, default: "Activo", enum: ["Activo", "Inactivo"] },
+    documento: { type: DataTypes.INTEGER, allowNull: false },
+    nombre: { type: DataTypes.STRING, allowNull: false },
+    email: { type: DataTypes.STRING, allowNull: false },
+    numero: { type: DataTypes.BIGINT, allowNull: false },
+    rol: { type: DataTypes.STRING, allowNull: false },
+    contraseña: { type: DataTypes.STRING, allowNull: false },
+    estado: {
+      type: DataTypes.STRING,
+      defaultValue: "Activo",
+      validate: {
+        isIn: [["Activo", "Inactivo"]],
+      },
+    },
   },
-  { versionKey: false }
+  { timestamps: false }
 );
 
 //-----------------------------------------------------------------------------------------//
 
-export default model("usuarios", UsuariosSchema);
+export default UsuariosSchema;
