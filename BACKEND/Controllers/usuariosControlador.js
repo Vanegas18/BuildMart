@@ -39,7 +39,7 @@ const enviarCorreoRegistro = async (emailDestino) => {
 // METODO GET
 export async function getUsuario(req, res) {
   try {
-    const usuarios = await Usuario.findAll();
+    const usuarios = await Usuario.find().lean();
     res.status(200).json(usuarios);
   } catch (error) {
     res
@@ -53,14 +53,15 @@ export async function getUsuario(req, res) {
 export async function getUsuarioById(req, res) {
   const { id } = req.params;
   try {
-    const usuario = await Usuario.findByPk(id);
-    if (usuario) {
-      res.status(200).json(usuario);
-    } else {
-      res.status(404).json({ msg: "Usuario no encontrado" });
+    const usuario = await Usuario.findById(id).lean();
+    if (!usuario) {
+      return res.status(404).json({ msg: "Usuario no encontrado" });
     }
+    res.json(usuario);
   } catch (error) {
-    res.status(500).json({ msg: `Error al obtener usuario: ${error.message}` });
+    res
+      .status(500)
+      .json({ msg: `Error al obtener el usuario: ${error.message}` });
   }
 }
 
@@ -68,33 +69,23 @@ export async function getUsuarioById(req, res) {
 // METODO PUT
 export async function putUsuario(req, res) {
   const { id } = req.params;
-  const { documento, nombre, email, numero, rol, contraseña } = req.body;
-
+  const { documento, nombre, email, numero, rol } = req.body;
+  let msg = "Usuario actualizado";
   try {
-    const usuario = await Usuario.findByPk(id);
-    if (usuario) {
-      const hashedPassword = contraseña
-        ? await bcrypt.hash(contraseña, 10)
-        : usuario.contraseña;
-      await usuario.update({
-        documento,
-        nombre,
-        email,
-        numero,
-        rol,
-        contraseña: hashedPassword,
-      });
-      res
-        .status(200)
-        .json({ message: "Usuario actualizado exitosamente", usuario });
-    } else {
-      res.status(404).json({ msg: "Usuario no encontrado" });
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(
+      id,
+      { documento, nombre, email, numero, rol },
+      { new: true } // Configura para devolver el usuario actualizado
+    );
+    if (!usuarioActualizado) {
+      msg = "Usuario no encontrado";
+      return res.status(404).json({ msg: msg });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ msg: `Error al actualizar usuario: ${error.message}` });
+    msg = `Error al actualizar el usuario: ${error.message}`;
+    return res.status(500).json({ msg: msg });
   }
+  res.status(200).json({ msg: msg });
 }
 
 //-----------------------------------------------------------------------------------------//
@@ -103,17 +94,15 @@ export async function putUsuario(req, res) {
 export async function putUsuarioEstado(req, res) {
   const { id } = req.params;
   const { estado } = req.body;
-
   try {
-    const usuarioActualizado = await Usuario.findByPk(id);
-    if (usuarioActualizado) {
-      await usuarioActualizado.update({ estado: estado });
-    }
-
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(
+      id,
+      { estado: estado },
+      { new: true } // Configura para devolver el usuario actualizado
+    );
     if (!usuarioActualizado) {
       return res.status(404).json({ msg: "Usuario no encontrado" });
     }
-
     res.status(200).json({
       msg: "Estado del usuario actualizado",
       usuario: usuarioActualizado,
@@ -128,24 +117,28 @@ export async function putUsuarioEstado(req, res) {
 //-----------------------------------------------------------------------------------------//
 // METODO POST
 export async function postUsuario(req, res) {
-  const { documento, nombre, email, numero, rol, contraseña } = req.body;
-
+  let msg = "Usuario creado exitosamente";
+  const { documento, nombre, email, numero, rol, contraseña, estado } =
+    req.body;
   try {
-    const hashedPassword = await bcrypt.hash(contraseña, 10);
-    const nuevoUsuario = await Usuario.create({
+    const usuario = new Usuario({
       documento,
       nombre,
       email,
       numero,
       rol,
-      contraseña: hashedPassword,
+      contraseña,
+      estado,
     });
-    await enviarCorreoRegistro(email);
-    res.status(201).json({
-      message: "Usuario registrado exitosamente",
-      usuario: nuevoUsuario,
-    });
+
+    //Cambiar la "ñ"
+    usuario.contraseña = await bcrypt.hash(contraseña, 5);
+    await usuario.save();
+    enviarCorreoRegistro(email);
+    res.status(201).json({ msg: msg });
   } catch (error) {
-    res.status(500).json({ message: "Error al registrar el usuario", error });
+    res
+      .status(500)
+      .json({ msg: `Error al crear el usuario: ${error.message}` });
   }
 }

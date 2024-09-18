@@ -18,10 +18,8 @@
     "express": "^4.20.0",
     "mongoose": "^8.6.1",
     "mongoose-sequence": "^6.0.1",
-    "mysql2": "*",
     "nodemailer": "^6.9.15",
-    "prettier": "^3.3.3",
-    "sequelize": "*"
+    "prettier": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

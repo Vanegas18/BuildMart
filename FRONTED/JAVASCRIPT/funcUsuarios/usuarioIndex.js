@@ -41,17 +41,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }</td>
         <td>
           <button class="btnEditar dark-mode" on
-          click="editarUsuario('${usuario.id}')">
-            <a href="./editarUsuario.html?id=${usuario.id}">
+          click="editarUsuario('${usuario._id}')">
+            <a href="./editarUsuario.html?id=${usuario._id}">
               <i class="fa-solid fa-pen-to-square"></i>
             </a>
           </button>
         </td>
         <td>
           <button class="btnEditar" onclick="cambiarEstadoUsuario('${
-            usuario.id
+            usuario._id
           }')">
-            <a href="./cambiarEstado.html?id=${usuario.id}">
+            <a href="./cambiarEstado.html?id=${usuario._id}">
               <i class="fa-solid fa-power-off"></i>
             </a>
           </button>
