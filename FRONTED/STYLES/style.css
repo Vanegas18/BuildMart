@@ -242,6 +242,7 @@ aside .toggle .close {
   visibility: hidden; /* Hacer invisible */
   opacity: 0; /* Hacer invisible */
 }
+
 aside .sidebar {
   display: flex;
   flex-direction: column;

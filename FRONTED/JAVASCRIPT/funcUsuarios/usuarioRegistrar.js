@@ -116,4 +116,4 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((error) => console.error("Error al registrar usuario:", error));
     }
   }
-});
+}); 
