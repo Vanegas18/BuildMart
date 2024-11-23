@@ -5,9 +5,12 @@ import Categorias from "../Models/categoriaModel.js";
 export async function getCategorias(req, res) {
   try {
     const categorias = await Categorias.find().lean();
+    if (!Array.isArray(categorias)) {
+      throw new TypeError("La respuesta no es un array.");
+    }
     res.status(200).json({ categorias });
   } catch (error) {
-    res.status(404).json(error);
+    res.status(404).json({ msg: `Error al obtener categorías: ${error.message}` });
   }
 }
 

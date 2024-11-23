@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 export async function getProductos(req, res) {
   try {
     const productos = await Productos.find().lean();
-    res.status(200).json(productos);
+    res.status(200).json({ productos });
   } catch (error) {
     res
       .status(500)
@@ -23,7 +23,7 @@ export async function getProductosById(req, res) {
     if (!producto) {
       return res.status(404).json({ msg: "Producto no encontrado" });
     }
-    res.json(producto);
+    res.json({ producto });
   } catch (error) {
     res
       .status(500)
@@ -34,11 +34,12 @@ export async function getProductosById(req, res) {
 //-----------------------------------------------------------------------------------------//
 // METODO PUT
 export async function putProductos(req, res) {
-  const { id, nombre, categoria, descripcion, precio, stock } = req.body;
+  const { nombre, categoria, descripcion, precio, stock } = req.body;
+  const { id } = req.params;
   let msg = "Producto editado correctamente";
   try {
-    const productoActualizado = await Productos.findOneAndUpdate(
-      { id: id },
+    const productoActualizado = await Productos.findByIdAndUpdate(
+      id,
       {
         nombre: nombre,
         categoria: categoria,
@@ -91,6 +92,9 @@ export async function putProductosEstado(req, res) {
 export async function postProducto(req, res) {
   const { nombre, categoria, descripcion, precio, stock, estado } = req.body;
   try {
+    if (!mongoose.Types.ObjectId.isValid(categoria)) {
+      throw new Error("ID de categoría no válido");
+    }
     const categoriaObjectId = new mongoose.Types.ObjectId(categoria);
     const nuevoProducto = new Productos({
       nombre,

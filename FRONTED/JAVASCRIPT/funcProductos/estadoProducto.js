@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return response.json();
       })
-      .then((producto) => {
+      .then((data) => {
+        const producto = data.producto;
         // Rellenar los elementos con los datos del usuario
         document.getElementById("producto-nombre").innerHTML =
           `<strong> Nombre: </strong>${producto.nombre}`;
@@ -57,7 +58,8 @@ function cambiarEstadoUsuario(id) {
       }
       return response.json();
     })
-    .then((producto) => {
+    .then((data) => {
+      const producto = data.producto;
       // Determinar el nuevo estado
       const nuevoEstado = producto.estado === "Activo" ? "Inactivo" : "Activo";
 

@@ -1,32 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cambiar Estado del Producto</title>
-    <link rel="stylesheet" href="../../STYLES/registro.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </head>
-  <body>
-    <div class="estado-container">
-      <div class="estado-modal">
-        <h3>Cambiar Estado del Producto</h3>
-        <p id="producto-nombre" class="yo"><strong>Nombre:</strong></p>
-        <p id="producto-categoria" class="yo"><strong>Categoria:</strong></p>
-        <p id="producto-precio" class="yo"><strong>Precio:</strong></p>
-        <p id="estado-actual">
-          <strong>Estado Actual:</strong> <span id="estado"></span>
-        </p>
-        <div class="modal-buttons">
-          <button id="cambiarEstadoBtn" class="estado-btn cambiar">
-            Cambiar de estado
-          </button>
-          <button class="estado-btn cancelar">
-            <a href="./Productos.html">Cancelar</a>
-          </button>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cambiar Estado del Producto</title>
+  <link rel="stylesheet" href="../../STYLES/registro.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <div class="estado-container">
+    <div class="estado-modal">
+      <h3>Cambiar Estado del Producto</h3>
+      <p id="producto-nombre" class="yo"><strong>Nombre:</strong></p>
+      <p id="producto-categoria" class="yo"><strong>Categoria:</strong></p>
+      <p id="producto-precio" class="yo"><strong>Precio:</strong></p>
+      <p id="estado-actual">
+        <strong>Estado Actual:</strong> <span id="estado"></span>
+      </p>
+      <div class="modal-buttons">
+        <button id="cambiarEstadoBtn" class="estado-btn cambiar">
+          Cambiar de estado
+        </button>
+        <button class="estado-btn cancelar">
+          <a href="./Productos.html">Cancelar</a>
+        </button>
       </div>
     </div>
-    <script src="../../JAVASCRIPT/funcProductos/estadoProducto.js"></script>
-  </body>
+  </div>
+  <script src="../../JAVASCRIPT/funcProductos/estadoProducto.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+
+      if (!id) {
+        console.error("No se proporcionó el ID del producto en la URL.");
+        return;
+      }
+
+      fetch(`/api/productos/${id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("No se pudo obtener los datos del producto.");
+          }
+          return response.json();
+        })
+        .then(data => {
+          const producto = data.producto;
+          if (!producto) {
+            throw new Error("No se encontraron datos del producto.");
+          }
+
+          const nombreElement = document.getElementById("producto-nombre");
+          const categoriaElement = document.getElementById("producto-categoria");
+          const precioElement = document.getElementById("producto-precio");
+          const estadoElement = document.getElementById("estado");
+
+          if (nombreElement) nombreElement.innerHTML = `<strong>Nombre:</strong> ${producto.nombre}`;
+          if (categoriaElement) categoriaElement.innerHTML = `<strong>Categoría:</strong> ${producto.categoria}`;
+          if (precioElement) precioElement.innerHTML = `<strong>Precio:</strong> ${producto.precio}`;
+          if (estadoElement) estadoElement.textContent = producto.estado;
+
+          return fetch(`/api/categorias/${producto.categoria}`);
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("No se pudo obtener los datos de la categoría.");
+          }
+          return response.json();
+        })
+        .then(categoriaData => {
+          const categoriaElement = document.getElementById("producto-categoria");
+          if (categoriaElement) {
+            categoriaElement.innerHTML = `<strong>Categoría:</strong> ${categoriaData.categoria.nombre}`;
+          }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+  </script>
+</body>
+
 </html>

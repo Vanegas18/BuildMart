@@ -12,8 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((categorias) => {
+      if (!Array.isArray(categorias.categorias)) {
+        throw new Error("La respuesta de categorías no es un array.");
+      }
       // Iterar sobre las categorías y almacenarlas en un mapa
-      categorias.forEach((categoria) => {
+      categorias.categorias.forEach((categoria) => {
         categoriasMap.set(categoria._id, categoria.nombre);
       });
 
@@ -27,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((data) => {
-      productos = data;
+      productos = data.productos;
       // Iterar sobre las categorías y almacenarlas en un mapa
       productosFiltrados = [...productos];
       mostrarProductos(productosFiltrados);

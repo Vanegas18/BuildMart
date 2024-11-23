@@ -14,8 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return response.json();
     })
     .then((data) => {
+      console.log("Datos recibidos:", data); // Verificar el formato de 'data'
+      const categorias = data.categorias; // Acceder a la propiedad 'categorias'
+      if (!Array.isArray(categorias)) {
+        throw new TypeError("La respuesta no es un array.");
+      }
       const selectCategoria = document.getElementById("categoriaProducto");
-      data.forEach((categoria) => {
+      categorias.forEach((categoria) => {
         const option = document.createElement("option");
         option.value = categoria._id;
         option.textContent = categoria.nombre;

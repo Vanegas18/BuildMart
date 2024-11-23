@@ -11,25 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("No se proporcionó el ID del usuario en la URL.");
   }
 
-  // PARA QUE AL CREAR UNA CATEGORIA SE MUESTRE EN EL SELECT
-  fetch("/api/categorias")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error al obtener las categorias.");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const selectCategoria = document.getElementById("categoriaProducto");
-      data.forEach((categoria) => {
-        const option = document.createElement("option");
-        option.value = categoria._id;
-        option.textContent = categoria.nombre;
-        selectCategoria.appendChild(option);
-      });
-    })
-    .catch((error) => console.error("Error al obtener las categorias:", error));
-
   // Obtener los datos de la API
   fetch(`/api/productos/${id}`)
     .then((response) => {
@@ -41,13 +22,39 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       if (data) {
+        const producto = data.producto;
         // Rellenar el formulario con los datos del usuario
-        document.getElementById("id_editarProduct").value = data.id;
-        document.getElementById("nombreProducto").value = data.nombre;
-        document.getElementById("categoriaProducto").value = data.categoria;
-        document.getElementById("descripcionProducto").value = data.descripcion;
-        document.getElementById("precioProducto").value = data.precio;
-        document.getElementById("stockProducto").value = data.stock;
+        document.getElementById("id_editarProduct").value = producto._id;
+        document.getElementById("nombreProducto").value = producto.nombre;
+        document.getElementById("descripcionProducto").value = producto.descripcion;
+        document.getElementById("precioProducto").value = producto.precio;
+        document.getElementById("stockProducto").value = producto.stock;
+
+        // Obtener las categorías y seleccionar la del producto
+        fetch("/api/categorias")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Error al obtener las categorias.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (Array.isArray(data.categorias)) {
+              const selectCategoria = document.getElementById("categoriaProducto");
+              data.categorias.forEach((categoria) => {
+                const option = document.createElement("option");
+                option.value = categoria._id;
+                option.textContent = categoria.nombre;
+                if (categoria._id === producto.categoria) {
+                  option.selected = true;
+                }
+                selectCategoria.appendChild(option);
+              });
+            } else {
+              console.error("La respuesta de la API no es un array.");
+            }
+          })
+          .catch((error) => console.error("Error al obtener las categorias:", error));
       } else {
         console.error("No se encontraron datos del producto.");
       }
@@ -57,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   const expresiones = {
-    id: /^\d+$/,
     nombre: /^[a-zA-Z0-9\s]{1,50}$/,
     categoria: /^[a-zA-Z\s]{1,30}$/,
     descripcion: /^[a-zA-Z0-9\s.,-áéíóúüñÁÉÍÓÚÜÑ]{1,500}$/,
@@ -88,14 +94,14 @@ document.addEventListener("DOMContentLoaded", () => {
         valid = false;
       }
 
-      // if (!expresiones.categoria.test(category)) {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Oops...",
-      //     text: "Los caracteres que has ingresado en la categoría no son correctos. Solo se permiten letras (mayúsculas o minúsculas) y espacios.",
-      //   });
-      //   valid = false;
-      // }
+      if (!categoria) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Por favor selecciona una categoría.",
+        });
+        valid = false;
+      }
 
       if (!expresiones.descripcion.test(descripcion)) {
         Swal.fire({
@@ -124,19 +130,9 @@ document.addEventListener("DOMContentLoaded", () => {
         valid = false;
       }
 
-      if (!expresiones.id.test(id)) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Los caracteres que has ingresado en el id no son correctos. Solo se permiten números enteros, sin decimales.",
-        });
-        valid = false;
-      }
-
       // Si todos los campos son válidos, enviar los datos
       if (valid) {
         const producto = {
-          id,
           nombre,
           categoria,
           descripcion,
@@ -154,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
           .then((response) => {
             if (!response.ok) {
-              throw new ERROR("No se puede actualizar el producto");
+              throw new Error("No se puede actualizar el producto");
             }
             return response.json();
           })
