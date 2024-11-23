@@ -19,10 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((data) => {
       if (data) {
-        document.getElementById("id_editarCategoria").value = data.id;
-        document.getElementById("nombreCategoria").value = data.nombre;
+        const categoria = data.categoria;
+        document.getElementById("id_editarCategoria").value = categoria.id;
+        document.getElementById("nombreCategoria").value = categoria.nombre;
         document.getElementById("descripcionCategoria").value =
-          data.descripcion;
+          categoria.descripcion;
       } else {
         console.error("No se encontraron los datos de la categoría.");
       }

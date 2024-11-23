@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return response.json();
       })
-      .then((categoria) => {
+      .then((data) => {
+        const categoria = data.categoria;
         document.getElementById("categoriaId").innerHTML =
           `<strong> Categoria: </strong>${categoria.id}`;
         document.getElementById("categoriaNombre").innerHTML =
@@ -54,7 +55,8 @@ function cambiarEstadoCategoria(id) {
       }
       return response.json();
     })
-    .then((categoria) => {
+    .then((data) => {
+      const categoria = data.categoria;
       // Determinar el nuevo estado
       const nuevoEstado = categoria.estado === "Activo" ? "Inactivo" : "Activo";
 

@@ -10,7 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
       return response.json();
     })
     .then((data) => {
-      categorias = data;
+      if (!Array.isArray(data.categorias)) {
+        throw new Error("La respuesta no es un array");
+      }
+      categorias = data.categorias;
       categoriasFiltradas = [...categorias];
       mostrarCategorias(categoriasFiltradas);
       initPagination(categoriasFiltradas);
