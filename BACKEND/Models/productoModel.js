@@ -1,5 +1,5 @@
-import mongoose, {model, Schema} from 'mongoose';
-import mongooseSequence from 'mongoose-sequence';
+import mongoose, { model, Schema } from "mongoose";
+import mongooseSequence from "mongoose-sequence";
 
 const AutoIncrementFactory = mongooseSequence(mongoose);
 
@@ -10,8 +10,7 @@ const productoSchema = new Schema(
     id: { type: Number },
     nombre: { type: String, required: true, trim: true },
     categoria: {
-      type: mongoose.Schema.Types.ObjectId, // Tipo de dato referenciado
-      ref: "categorias", // Referencia de categorias
+      type: String,
       required: true,
       trim: true,
     },
