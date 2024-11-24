@@ -92,13 +92,9 @@ export async function putProductosEstado(req, res) {
 export async function postProducto(req, res) {
   const { nombre, categoria, descripcion, precio, stock, estado } = req.body;
   try {
-    if (!mongoose.Types.ObjectId.isValid(categoria)) {
-      throw new Error("ID de categoría no válido");
-    }
-    const categoriaObjectId = new mongoose.Types.ObjectId(categoria);
     const nuevoProducto = new Productos({
       nombre,
-      categoria: categoriaObjectId,
+      categoria,
       descripcion,
       precio,
       stock,
